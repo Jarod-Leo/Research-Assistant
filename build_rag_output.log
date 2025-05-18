@@ -28,6 +28,7 @@ with new imports of:
 >> from langchain_community.vectorstores import FAISS
 You can use the langchain cli to **automatically** upgrade many imports. Please see documentation here <https://python.langchain.com/docs/versions/v0_2/>
   from langchain.vectorstores import FAISS
+已检测到向量数据库，直接加载...
 Sliding Window Attention is enabled but not implemented for `sdpa`; unexpected results may be encountered.
 /venv/main/lib/python3.12/site-packages/langchain/llms/__init__.py:549: LangChainDeprecationWarning: Importing LLMs from langchain is deprecated. Importing from langchain will no longer be supported as of langchain==0.2.0. Please import from langchain-community instead:
 
@@ -36,32 +37,25 @@ Sliding Window Attention is enabled but not implemented for `sdpa`; unexpected r
 To install langchain-community run `pip install -U langchain-community`.
   warnings.warn(
 Device set to use cuda:0
-/workspace/Research-Assistant/Built_RAG.py:56: LangChainDeprecationWarning: The class `HuggingFacePipeline` was deprecated in LangChain 0.0.37 and will be removed in 1.0. An updated version of the class exists in the :class:`~langchain-huggingface package and should be used instead. To use it run `pip install -U :class:`~langchain-huggingface` and import as `from :class:`~langchain_huggingface import HuggingFacePipeline``.
+/workspace/Research-Assistant/Built_RAG.py:66: LangChainDeprecationWarning: The class `HuggingFacePipeline` was deprecated in LangChain 0.0.37 and will be removed in 1.0. An updated version of the class exists in the :class:`~langchain-huggingface package and should be used instead. To use it run `pip install -U :class:`~langchain-huggingface` and import as `from :class:`~langchain_huggingface import HuggingFacePipeline``.
   llm = HuggingFacePipeline(pipeline=pipe)
-/venv/main/lib/python3.12/site-packages/langchain/llms/__init__.py:549: LangChainDeprecationWarning: Importing LLMs from langchain is deprecated. Importing from langchain will no longer be supported as of langchain==0.2.0. Please import from langchain-community instead:
-
-`from langchain_community.llms import HuggingFacePipeline`.
-
-To install langchain-community run `pip install -U langchain-community`.
-  warnings.warn(
+/workspace/Research-Assistant/Built_RAG.py:99: LangChainDeprecationWarning: The method `Chain.__call__` was deprecated in langchain 0.1.0 and will be removed in 1.0. Use :meth:`~invoke` instead.
+  result = qa_chain({"query": question})
 /venv/main/lib/python3.12/site-packages/transformers/generation/configuration_utils.py:631: UserWarning: `do_sample` is set to `False`. However, `temperature` is set to `0.7` -- this flag is only used in sample-based generation modes. You should set `do_sample=True` or unset `temperature`.
   warnings.warn(
 /venv/main/lib/python3.12/site-packages/transformers/generation/configuration_utils.py:636: UserWarning: `do_sample` is set to `False`. However, `top_p` is set to `0.9` -- this flag is only used in sample-based generation modes. You should set `do_sample=True` or unset `top_p`.
   warnings.warn(
-Use the following pieces of context to answer the question at the end. If you don't know the answer, just say that you don't know, don't try to make up an answer.
+你是一个专业的中文科研助手，请根据以下上下文信息回答问题。
+如果不知道答案，就回答不知道，不要编造答案。
 
-中文翻译: 近年来，大型语言模型（LLM）的能力取得飞速进展，极大革新了自然语言处理（NLP）和人工智能（AI）领域对人类语言的理解与交互方式。为此，本研究通过系统性文献调研，梳理出LLM发展的核心主题、方向、影响及局限。研究发现揭示了LLM研究的目标定位、方法体系、现存局限与未来趋势，涵盖负责任开发框架、算法优化路径、伦理挑战及社会影响等维度。本文不仅对当前LLM研究进行了严谨而全面的综述，更指明了未来发展的潜在方向，重点探讨了可能产生积极社会影响的应用领域及其伴随的伦理考量。
+上下文：
+中文翻译: Transformer模型已在自然语言处理领域的实证机器学习模型中占据主导地位。本文系统介绍了Transformer的基础概念，并阐述了推动这类模型近期发展的关键技术体系。主要内容包括：标准Transformer架构解析、一系列模型优化方法以及典型应用场景。鉴于Transformer及相关深度学习技术可能正以我们前所未见的方式演进，本文无法穷尽所有模型细节或覆盖全部技术领域，而是聚焦于那些真正有助于深入理解Transformer及其变体的核心概念。同时，我们对影响该领域发展的关键思想进行提炼，从而揭示这类模型的内在优势与固有局限性。
 
-中文翻译: 近年来，大型语言模型（LLM）的卓越表现不仅在自然语言处理领域大放异彩，更在诸多应用场景中展现出强大潜力。这种令人瞩目的技术突破催生了该领域研究热潮，其贡献涵盖神经网络架构创新、上下文长度扩展、模型对齐优化、训练数据集构建、基准测试体系、效能提升等多元主题。学术界与工业界形成的动态合力，正将LLM研究推向全新高度——其中具有里程碑意义的ChatGPT作为基于LLM技术的智能对话系统，已引发全社会广泛关注。持续演进的LLM技术正在重塑整个人工智能领域的发展格局，预示着AI算法开发与应用方式将迎来革命性变革。
+中文翻译: 以下是符合要求的学术性中文翻译：
 
-面对这一快速演进的技术浪潮，本综述致力于系统梳理LLM领域的最新进展。通过深入探讨技术背景、关键发现与主流方法论，我们呈现了前沿文献的时效性评述。基于对多种LLM模型的横向对比，本文不仅提供全景式概览，更通过厘清现存挑战来指明未来潜在研究方向。本调查为生成式AI的现状提供了多维透视，为后续的探索突破、性能优化与创新实践揭示了宝贵机遇。
+自然语言处理领域中Transformer模型的显著成功引发了语音处理学界的研究兴趣，促使学者们探索其在建模语音序列长程依赖性方面的潜力。近年来，Transformer模型已在多个语音相关领域崭露头角，包括自动语音识别、语音合成、语音翻译、语音副语言学、语音增强、口语对话系统以及众多多模态应用。本文通过系统性综述，旨在整合语音技术各子领域的研究成果，为希望利用Transformer推动学科发展的研究者提供重要参考资源。我们在剖析Transformer应用于语音处理时所面临挑战的同时，也针对这些问题提出了潜在的解决方案。
 
-中文翻译: 大型语言模型（LLMs）是需求工程（RE）任务自动化的基石，支撑着该领域的最新进展。其预训练的自然语言理解能力对于有效适配特定RE任务至关重要。然而，面对现有的大量模型架构，如何选择合适的LLM并对其进行微调以应对复杂任务，仍是RE领域研究者与实践者面临的重大挑战。要有效利用LLM解决RE中的自然语言处理（NLP）问题，需要双重认知：既要理解LLM的内部机制，又要掌握为NLP4RE任务选择和适配LLM的系统方法。本章前半部分旨在为读者奠定LLM的基础知识，后半部分则面向学生、研究者和从业者，提供针对其具体目标运用LLM的完整指南。通过阐释LLM的运作原理并给出实践指导，本章将为未来利用LLM解决RE挑战的研究与应用提供助力。
+中文翻译: 文档摘要是指通过提取与主题相关的关键信息，生成既简洁又能准确反映原文内容的概括性文本。目前主要存在两种技术路径：其一是从原文直接抽取最具代表性的语句组成摘要（抽取式摘要），其二是通过语义理解生成全新语句形成摘要（生成式摘要）。在机器学习领域，如何训练模型完成那些耗时且人工评估困难的任务始终是重大挑战，书籍摘要生成正是此类复杂任务的典型代表。随着预训练Transformer模型的发展，传统机器学习方法正在经历革新。基于Transformer架构、采用自监督训练方式的语言模型，经过自然语言处理（NLP）下游任务（如文本摘要）的微调后，已展现出显著优势。本研究旨在探索基于Transformer技术的摘要生成方法。
 
-中文翻译: 以下是您提供的英文论文摘要的中文翻译：
-
-监测生产环境中机器学习模型的核心环节在于测量输入与输出数据的漂移情况。本文提出了一种用于检测自然语言数据分布偏移的系统，重点探讨并研究了利用大语言模型（LLMs）解决该问题的潜在优势。LLMs领域的最新进展及其在多领域的成功应用表明，其在捕捉语义关系以解决各类自然语言处理任务方面具有显著效果。LLMs的核心能力主要源自其神经网络隐藏层生成的编码（嵌入向量）。我们首先提出一种基于聚类的算法，通过利用此类嵌入向量来量化文本数据的分布偏移程度；随后对比研究了LLMs与传统嵌入算法生成的文本嵌入向量在本方法中的实际效果。实验表明，相较于其他嵌入方法，基于通用型LLM的嵌入向量对数据漂移具有更高的敏感度。我们提出应将漂移敏感度作为语言模型比较时的重要评估指标。最后，本文分享了将本框架集成至Fiddler机器学习监测平台18个月以来所获得的实践洞见与经验总结。
-
-Question: 请总结近期LLM在跨语言应用方面有哪些进展？
-Helpful Answer: 本文不仅对当前LLM研究进行了严谨而全面的综述，更指明了未来发展的潜在方向，重点探讨了可能产生积极社会影响的应用领域及其伴随的伦理考量。 
-[Document(id='12aa9ff3-3b48-49d5-ac3c-f5552e22352f', metadata={'source': 'data_processing/rag_paper_md/1331_2409.16974.md'}, page_content='中文翻译: 近年来，大型语言模型（LLM）的能力取得飞速进展，极大革新了自然语言处理（NLP）和人工智能（AI）领域对人类语言的理解与交互方式。为此，本研究通过系统性文献调研，梳理出LLM发展的核心主题、方向、影响及局限。研究发现揭示了LLM研究的目标定位、方法体系、现存局限与未来趋势，涵盖负责任开发框架、算法优化路径、伦理挑战及社会影响等维度。本文不仅对当前LLM研究进行了严谨而全面的综述，更指明了未来发展的潜在方向，重点探讨了可能产生积极社会影响的应用领域及其伴随的伦理考量。'), Document(id='63d20509-f9c0-490b-b9b3-89bcfa1097f3', metadata={'source': 'data_processing/rag_paper_md/892_2403.14469.md'}, page_content='中文翻译: 近年来，大型语言模型（LLM）的卓越表现不仅在自然语言处理领域大放异彩，更在诸多应用场景中展现出强大潜力。这种令人瞩目的技术突破催生了该领域研究热潮，其贡献涵盖神经网络架构创新、上下文长度扩展、模型对齐优化、训练数据集构建、基准测试体系、效能提升等多元主题。学术界与工业界形成的动态合力，正将LLM研究推向全新高度——其中具有里程碑意义的ChatGPT作为基于LLM技术的智能对话系统，已引发全社会广泛关注。持续演进的LLM技术正在重塑整个人工智能领域的发展格局，预示着AI算法开发与应用方式将迎来革命性变革。\n\n面对这一快速演进的技术浪潮，本综述致力于系统梳理LLM领域的最新进展。通过深入探讨技术背景、关键发现与主流方法论，我们呈现了前沿文献的时效性评述。基于对多种LLM模型的横向对比，本文不仅提供全景式概览，更通过厘清现存挑战来指明未来潜在研究方向。本调查为生成式AI的现状提供了多维透视，为后续的探索突破、性能优化与创新实践揭示了宝贵机遇。'), Document(id='2e30c19e-0e33-42a8-be43-cd93eaae87d1', metadata={'source': 'data_processing/rag_paper_md/816_2402.13823.md'}, page_content='中文翻译: 大型语言模型（LLMs）是需求工程（RE）任务自动化的基石，支撑着该领域的最新进展。其预训练的自然语言理解能力对于有效适配特定RE任务至关重要。然而，面对现有的大量模型架构，如何选择合适的LLM并对其进行微调以应对复杂任务，仍是RE领域研究者与实践者面临的重大挑战。要有效利用LLM解决RE中的自然语言处理（NLP）问题，需要双重认知：既要理解LLM的内部机制，又要掌握为NLP4RE任务选择和适配LLM的系统方法。本章前半部分旨在为读者奠定LLM的基础知识，后半部分则面向学生、研究者和从业者，提供针对其具体目标运用LLM的完整指南。通过阐释LLM的运作原理并给出实践指导，本章将为未来利用LLM解决RE挑战的研究与应用提供助力。'), Document(id='d0ebcc4b-6a1c-4386-bb6e-6c79408796c9', metadata={'source': 'data_processing/rag_paper_md/628_2312.02337.md'}, page_content='中文翻译: 以下是您提供的英文论文摘要的中文翻译：\n\n监测生产环境中机器学习模型的核心环节在于测量输入与输出数据的漂移情况。本文提出了一种用于检测自然语言数据分布偏移的系统，重点探讨并研究了利用大语言模型（LLMs）解决该问题的潜在优势。LLMs领域的最新进展及其在多领域的成功应用表明，其在捕捉语义关系以解决各类自然语言处理任务方面具有显著效果。LLMs的核心能力主要源自其神经网络隐藏层生成的编码（嵌入向量）。我们首先提出一种基于聚类的算法，通过利用此类嵌入向量来量化文本数据的分布偏移程度；随后对比研究了LLMs与传统嵌入算法生成的文本嵌入向量在本方法中的实际效果。实验表明，相较于其他嵌入方法，基于通用型LLM的嵌入向量对数据漂移具有更高的敏感度。我们提出应将漂移敏感度作为语言模型比较时的重要评估指标。最后，本文分享了将本框架集成至Fiddler机器学习监测平台18个月以来所获得的实践洞见与经验总结。')]
+问题：Transformer在文本摘要中有哪些应用？
+专业回答：基于Transformer架构、采用自监督训练方式的语言模型，经过自然语言处理（NLP）下游任务（如文本摘要）的微调后，已展现出显著优势。 
