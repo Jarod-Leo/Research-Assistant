@@ -25,9 +25,19 @@ embedding_model = HuggingFaceEmbeddings(
 
 # 构建向量数据库
 from langchain.vectorstores import FAISS
+import os
+db_path = "faiss_db"
 
-vector_db = FAISS.from_documents(splits, embedding_model)
-vector_db.save_local("faiss_db")  # 保存以备后用
+if not os.path.exists(db_path):
+    # 如果向量库文件夹不存在，说明需要创建
+    print("未检测到向量数据库，正在创建...")
+    vector_db = FAISS.from_documents(splits, embedding_model)
+    vector_db.save_local(db_path)
+else:
+    # 否则直接加载已有数据库
+    print("已检测到向量数据库，直接加载...")
+    vector_db = FAISS.load_local(db_path, embedding_model, allow_dangerous_deserialization=True)
+
 
 # 加载SFT调好的模型
 from transformers import AutoModelForCausalLM, AutoTokenizer
@@ -54,20 +64,37 @@ pipe = pipeline(
 )
 
 llm = HuggingFacePipeline(pipeline=pipe)
+
+# 创建检索器
+retriever = vector_db.as_retriever(search_kwargs={"k": 3}) # 每次检索时返回 最相似的 3 个文本片段
+
+# 设计提示词模板
+from langchain.prompts import PromptTemplate
+
+template = """你是一个专业的中文科研助手，请根据以下上下文信息回答问题。
+如果不知道答案，就回答不知道，不要编造答案。
+
+上下文：
+{context}
+
+问题：{question}
+专业回答："""
+
+prompt = PromptTemplate(
+    template=template,
+    input_variables=["context", "question"]
+) 
 # 构建查询接口
 from langchain.chains import RetrievalQA
-from langchain.llms import HuggingFacePipeline  # 或 OpenAI
 
-retriever = vector_db.as_retriever()
 qa_chain = RetrievalQA.from_chain_type(
-    llm=llm,  # 你微调的 Qwen 模型或 ChatGPT API
+    llm=llm,
     chain_type="stuff",
     retriever=retriever,
+    chain_type_kwargs={"prompt": prompt},
     return_source_documents=True
 )
 
-# test_output = llm("你好，你是谁？")
-# print(test_output)
-response = qa_chain.invoke({"query": "请总结近期LLM在跨语言应用方面有哪些进展？"})
-print(response["result"])  # 获取答案
-print(response["source_documents"])  # 获取来源文档
+question = "Transformer在文本摘要中有哪些应用？"
+result = qa_chain({"query": question})
+print(result["result"])
