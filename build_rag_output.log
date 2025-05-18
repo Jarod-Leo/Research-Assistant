@@ -39,23 +39,44 @@ To install langchain-community run `pip install -U langchain-community`.
 Device set to use cuda:0
 /workspace/Research-Assistant/Built_RAG.py:66: LangChainDeprecationWarning: The class `HuggingFacePipeline` was deprecated in LangChain 0.0.37 and will be removed in 1.0. An updated version of the class exists in the :class:`~langchain-huggingface package and should be used instead. To use it run `pip install -U :class:`~langchain-huggingface` and import as `from :class:`~langchain_huggingface import HuggingFacePipeline``.
   llm = HuggingFacePipeline(pipeline=pipe)
-/workspace/Research-Assistant/Built_RAG.py:99: LangChainDeprecationWarning: The method `Chain.__call__` was deprecated in langchain 0.1.0 and will be removed in 1.0. Use :meth:`~invoke` instead.
-  result = qa_chain({"query": question})
+/workspace/Research-Assistant/Built_RAG.py:83: LangChainDeprecationWarning: The method `BaseLLM.__call__` was deprecated in langchain-core 0.1.7 and will be removed in 1.0. Use :meth:`~invoke` instead.
+  rewritten_query = llm(rewrite_prompt)
 /venv/main/lib/python3.12/site-packages/transformers/generation/configuration_utils.py:631: UserWarning: `do_sample` is set to `False`. However, `temperature` is set to `0.7` -- this flag is only used in sample-based generation modes. You should set `do_sample=True` or unset `temperature`.
   warnings.warn(
 /venv/main/lib/python3.12/site-packages/transformers/generation/configuration_utils.py:636: UserWarning: `do_sample` is set to `False`. However, `top_p` is set to `0.9` -- this flag is only used in sample-based generation modes. You should set `do_sample=True` or unset `top_p`.
   warnings.warn(
+原始查询: Transformer在文本摘要中有哪些应用？
+改写后的查询: 请将以下用户查询改写为更专业、更利于信息检索的形式，保持原意不变。
+
+检索结果(带相似度分数):
+
+结果 1 (相似度: -435.2548):
+中文翻译: 以下是符合要求的学术中文翻译：
+
+以ChatGPT为代表的大语言模型（LLMs）凭借卓越的自然语言处理能力引发广泛关注。在应用这些模型时，必须坚持以人为本的原则，确保其符合伦理道德规范至关重要。然而目前针对最新大语言模型的个体伦理问题研究尚不充分。为此，本研究通过构建新型评估基准TrustGPT来填补这一空白。该基准从毒性、偏见和价值对齐三个核心维度对大语言模型进行全面评估：首先基于社...
+
+结果 2 (相似度: -449.1102):
+中文翻译: 本研究致力于解决从临床记录中提取医学概念时的断言检测任务——这是临床自然语言处理（NLP）中的关键环节。临床NLP中的断言检测通常需要识别文本中医学概念的断言类型，包括确定性（医学概念属于阳性、否定、可能或假设）、时间性（医学概念涉及当前状况或既往史）以及体验者（医学概念描述对象是患者还是家属）。这些断言类型对于医疗专业人员快速清晰地理解非结构化临床文本中的病情语境至关重要，直接影响患...
+
+结果 3 (相似度: -450.1647):
+中文翻译: 大型语言模型在自然语言处理领域展现出卓越能力，但其在政治话语分析中的应用仍待深入探索。本文提出一种创新方法，利用大语言模型评估总统辩论表现，以解决长期以来辩论结果客观评估的难题。我们构建了一个分析框架，通过考察候选人的"政策主张、个人形象与核心观点"（3P要素）如何与四大关键受众群体——选民、企业、捐助者和政界人士——的"利益诉求、意识形态与身份认同"（3I要素）产生共鸣。该方法运用大...
+/workspace/Research-Assistant/Built_RAG.py:178: LangChainDeprecationWarning: The method `Chain.__call__` was deprecated in langchain 0.1.0 and will be removed in 1.0. Use :meth:`~invoke` instead.
+  result = qa_chain({"query": rewritten_query})
+/venv/main/lib/python3.12/site-packages/transformers/generation/configuration_utils.py:631: UserWarning: `do_sample` is set to `False`. However, `temperature` is set to `0.7` -- this flag is only used in sample-based generation modes. You should set `do_sample=True` or unset `temperature`.
+  warnings.warn(
+/venv/main/lib/python3.12/site-packages/transformers/generation/configuration_utils.py:636: UserWarning: `do_sample` is set to `False`. However, `top_p` is set to `0.9` -- this flag is only used in sample-based generation modes. You should set `do_sample=True` or unset `top_p`.
+  warnings.warn(
+
+最终答案:
 你是一个专业的中文科研助手，请根据以下上下文信息回答问题。
 如果不知道答案，就回答不知道，不要编造答案。
 
 上下文：
-中文翻译: Transformer模型已在自然语言处理领域的实证机器学习模型中占据主导地位。本文系统介绍了Transformer的基础概念，并阐述了推动这类模型近期发展的关键技术体系。主要内容包括：标准Transformer架构解析、一系列模型优化方法以及典型应用场景。鉴于Transformer及相关深度学习技术可能正以我们前所未见的方式演进，本文无法穷尽所有模型细节或覆盖全部技术领域，而是聚焦于那些真正有助于深入理解Transformer及其变体的核心概念。同时，我们对影响该领域发展的关键思想进行提炼，从而揭示这类模型的内在优势与固有局限性。
+（翻译说明： 1. 专业术语处理：IT operations译为"IT运维"符合行业惯例，LLMs/Mixture-of-adapter等术语保留英文缩写并辅以中文解释 2. 长句拆分重组：将原文复合句按中文表达习惯分解为多个短句，如将"where引导的定语从句"转为独立分句 3. 被动语态转化："it has become..."等英文被动结构转换为中文主动句式 4. 学术风格保持：使用"显著优于""构建""评测基准"等学术用语，保持论文摘要的严谨性 5. 文化适配："revolutionize"译为"革新"而非字面"革命"，更符合中文技术文献表述）
 
-中文翻译: 以下是符合要求的学术性中文翻译：
+（翻译说明： 1. 专业术语准确处理："inductive biases"译为"归纳偏置"，"throughput"译为"吞吐量"符合计算机领域惯例 2. 长句拆分重构：将原文复合句分解为符合中文表达习惯的短句，如第二句拆分为三个逻辑层次 3. 被动语态转化："are evaluated"转为主动式"评估了"，更符合中文论述习惯 4. 概念显化处理："online strategies"译为"在线生成策略"以明确技术内涵 5. 学术文本风格统一：保持"综述""揭示""旨在"等学术用语的一致性 6. 链接信息完整保留：项目页面URL未作改动确保可追溯性）
 
-自然语言处理领域中Transformer模型的显著成功引发了语音处理学界的研究兴趣，促使学者们探索其在建模语音序列长程依赖性方面的潜力。近年来，Transformer模型已在多个语音相关领域崭露头角，包括自动语音识别、语音合成、语音翻译、语音副语言学、语音增强、口语对话系统以及众多多模态应用。本文通过系统性综述，旨在整合语音技术各子领域的研究成果，为希望利用Transformer推动学科发展的研究者提供重要参考资源。我们在剖析Transformer应用于语音处理时所面临挑战的同时，也针对这些问题提出了潜在的解决方案。
+翻译特色说明： 1. 专业术语处理：采用"检索增强生成（RAG）"的标准译法，括号保留英文缩写 2. 句式重构：将原文复合长句拆分为符合中文表达习惯的短句（如第一句的拆分） 3. 被动语态转换："are covered"译为主动式"涵盖" 4. 概念显化处理："short-form/long-form queries"意译为"简答与详述类查询" 5. 学术风格保持：使用"显著改善""凸显...潜力"等符合学术摘要的规范表达 6. 技术名词统一：全篇保持"LLMs""QA"等缩写的一致性 7. 逻辑连接优化：通过"而""则"等连接词强化句子间逻辑关系
 
-中文翻译: 文档摘要是指通过提取与主题相关的关键信息，生成既简洁又能准确反映原文内容的概括性文本。目前主要存在两种技术路径：其一是从原文直接抽取最具代表性的语句组成摘要（抽取式摘要），其二是通过语义理解生成全新语句形成摘要（生成式摘要）。在机器学习领域，如何训练模型完成那些耗时且人工评估困难的任务始终是重大挑战，书籍摘要生成正是此类复杂任务的典型代表。随着预训练Transformer模型的发展，传统机器学习方法正在经历革新。基于Transformer架构、采用自监督训练方式的语言模型，经过自然语言处理（NLP）下游任务（如文本摘要）的微调后，已展现出显著优势。本研究旨在探索基于Transformer技术的摘要生成方法。
-
-问题：Transformer在文本摘要中有哪些应用？
-专业回答：基于Transformer架构、采用自监督训练方式的语言模型，经过自然语言处理（NLP）下游任务（如文本摘要）的微调后，已展现出显著优势。 
+问题：请将以下用户查询改写为更专业、更利于信息检索的形式，保持原意不变。
+专业回答： 1. 专业术语处理：IT operations译为"IT运维"符合行业惯例，LLMs/Mixture-of-adapter等术语保留英文缩写并辅以中文解释 2. 长句拆分重组：将原文复合句按中文表达习惯分解为多个短句，如将"where引导的定语从句"转为独立分句 3. 被动语态转化："it has become..."等英文被动结构转换为中文主动句式 4. 学术风格保持：使用"显著优于""构建""评测基准"等学术用语，保持论文摘要的严谨性 5. 文化适配："revolutionize"译为"革新"而非字面"革命"，更符合中文技术文献表述） 6. 文学风格统一：保持"综述""揭示""旨在"等学术用语的一致性 7. 技术名词统一：全篇保持"LLMs""QA"等缩写的一致性 8. 逻辑连接优化：通过"而""则"等连接词强化句子间逻辑关系 
