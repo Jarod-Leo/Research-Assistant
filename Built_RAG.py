@@ -1,5 +1,5 @@
 # 创建文档加载器
-from langchain.document_loaders import DirectoryLoader
+from langchain_community.document_loaders import DirectoryLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 
 # 加载MD文件
@@ -16,7 +16,7 @@ text_splitter = RecursiveCharacterTextSplitter(
 splits = text_splitter.split_documents(docs)
 
 # 选择嵌入模型
-from langchain.embeddings import HuggingFaceEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings
 
 embedding_model = HuggingFaceEmbeddings(
     model_name="GanymedeNil/text2vec-large-chinese",
@@ -24,7 +24,7 @@ embedding_model = HuggingFaceEmbeddings(
 )
 
 # 构建向量数据库
-from langchain.vectorstores import FAISS
+from langchain_community.vectorstores import FAISS
 import os
 db_path = "faiss_db"
 
