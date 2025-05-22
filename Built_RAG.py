@@ -97,44 +97,36 @@ def query_rewrite(original_query: str) -> str:
         return original_query
 
 # 2. 检索&重排功能
-def retrieve_and_rerank(query: str, k: int = 2):
-    """
-    检索并重排结果
-    :param query: 查询文本
-    :param k: 返回的结果数量
-    :return: 包含距离分数的结果列表
-    """
+def retrieve_and_rerank(query: str, k: int = 5):
     try:
-        # 获取查询文本的嵌入向量
-        query_embedding = embedding_model.embed_query(query)
-
+        # 获取查询向量并转换为numpy数组
+        query_embedding = np.array(embedding_model.embed_query(query), dtype='float32')
         
-        # 使用FAISS搜索
-        scores, indices = vector_db.index.search(query_embedding, k)
+        # 关键步骤：向量归一化
+        query_embedding = query_embedding / np.linalg.norm(query_embedding)
+        query_embedding = query_embedding.reshape(1, -1)  # 确保形状为(1, dim)
         
-        # 构造结果列表
+        # 执行搜索
+        distances, indices = vector_db.index.search(query_embedding, k)
+        
+        # 处理结果
         results = []
-        for score, idx in zip(scores[0], indices[0]):
-            if idx == -1:  # FAISS返回-1表示没有足够的结果
+        for dist, idx in zip(distances[0], indices[0]):
+            if idx == -1:  # 无效索引
                 continue
-            doc_idx = vector_db.index_to_docstore_id[idx]
-            doc = vector_db.docstore.search(doc_idx)
+            doc = vector_db.docstore.search(vector_db.index_to_docstore_id[idx])
             results.append({
                 "content": doc.page_content,
-                "metadata": doc.metadata,
-                "score": float(score)  # 将距离转换为相似度分数(0-1)
+                "score": 1 - dist  # 将距离转换为相似度
             })
         
-        # 按相似度分数降序排序
-        results.sort(key=lambda x: x["score"], reverse=True)
-        return results
+        return sorted(results, key=lambda x: x["score"], reverse=True)
     
     except Exception as e:
-        print(f"检索失败: {e}")
+        print(f"检索失败: {str(e)}")
         return []
-
 # 创建检索器
-retriever = vector_db.as_retriever(search_kwargs={"k": 2})
+retriever = vector_db.as_retriever(search_kwargs={"k": 5})
 
 # 设计提示词模板
 from langchain.prompts import PromptTemplate
@@ -214,7 +206,7 @@ print(f"原始查询: {result["original_query"]}")
 print(f"改写后的查询: {result["rewritten_query"]}")
 print("\n=== 最终回答 ===")
 print(result["answer"])
-print("\n=== 召回得分 ===")
+print("\n=== 重排得分 ===")
 print(result["retrieval_scores"])  # 打印得分列表
 print("\n=== 来源文档 ===")
 for i, doc in enumerate(result["source_documents"][:3], 1):
