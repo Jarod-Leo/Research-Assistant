@@ -1,0 +1,5 @@
+echo "qwen2-0.5b-firely-sft/" >> .gitignore
+git add .gitignore
+git commit -m "Ignore model directory"
+git push origin main
+
