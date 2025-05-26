@@ -2,8 +2,17 @@
 from langchain_community.document_loaders import DirectoryLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 import numpy as np
+from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_community.vectorstores import FAISS
+import os
+from transformers import AutoModelForCausalLM, AutoTokenizer
+from langchain_huggingface import HuggingFacePipeline
+from transformers import pipeline
+from langchain.prompts import PromptTemplate
+from langchain.chains import RetrievalQA
+
 # 加载MD文件
-loader = DirectoryLoader('data_processing/rag_paper_md/', glob="**/*.md")
+loader = DirectoryLoader('./Filter_laws', glob="**/*.md")  
 docs = loader.load()
 
 # 中文文本分割器
@@ -16,7 +25,6 @@ text_splitter = RecursiveCharacterTextSplitter(
 splits = text_splitter.split_documents(docs)
 
 # 选择嵌入模型
-from langchain_huggingface import HuggingFaceEmbeddings
 
 embedding_model = HuggingFaceEmbeddings(
     model_name="GanymedeNil/text2vec-large-chinese",
@@ -25,9 +33,7 @@ embedding_model = HuggingFaceEmbeddings(
 )
 
 # 构建向量数据库
-from langchain_community.vectorstores import FAISS
-import os
-db_path = "faiss_db"
+db_path = "faiss_db_law"  # 构建向量数据库
 
 if not os.path.exists(db_path):
     # 如果向量库文件夹不存在，说明需要创建
@@ -41,9 +47,8 @@ else:
 
 
 # 加载SFT调好的模型
-from transformers import AutoModelForCausalLM, AutoTokenizer
 
-model_path = "/workspace/Research-Assistant/qwen2-0.5b-firely-sft"  # 或 "qwen/Qwen1.5-0.5B"
+model_path = "/workspace/Research-Assistant/qwen2-0.5b-firely-sft"  # 选择自己微调好的模型
 
 tokenizer = AutoTokenizer.from_pretrained(model_path)
 model = AutoModelForCausalLM.from_pretrained(
@@ -52,8 +57,6 @@ model = AutoModelForCausalLM.from_pretrained(
 )
 
 # 创建Langchain llm包装器
-from langchain_huggingface import HuggingFacePipeline
-from transformers import pipeline
 
 pipe = pipeline(
     "text-generation",
@@ -129,13 +132,9 @@ def retrieve_and_rerank(query: str, k: int = 5):
 retriever = vector_db.as_retriever(search_kwargs={"k": 5})
 
 # 设计提示词模板
-from langchain.prompts import PromptTemplate
-
-# 构建查询接口
-from langchain.chains import RetrievalQA
 
 # 更新提示词模板，确保输入变量名匹配
-template = """你是一个专业的中文科研助手，请根据以下上下文信息回答问题。
+template = """你是一个专业的法律助手，请根据以下上下文信息回答问题。
 如果不知道答案，就回答不知道，不要编造答案。
 
 上下文：
@@ -173,7 +172,6 @@ def enhanced_qa(question: str):
     
     # 提取得分列表
     scores = [result["score"] for result in rerank_results]
-    # print("\n召回文档得分列表:", scores)
 
     retrieved_docs = retriever.invoke(rewritten_query)
     context = "\n\n".join([doc.page_content for doc in retrieved_docs])
@@ -200,14 +198,14 @@ def enhanced_qa(question: str):
     } 
     
 # 示例使用
-question = "Transformer在文本摘要中有哪些应用?"
+question = "《中华人民共和国劳动合同法》中关于试用期的规定有哪些？"
 result = enhanced_qa(question)
-print(f"原始查询: {result["original_query"]}")
-print(f"改写后的查询: {result["rewritten_query"]}")
+print(f"原始查询: {result['original_query']}")
+print(f"改写后的查询: {result['rewritten_query']}")
 print("\n=== 最终回答 ===")
-print(result["answer"])
+print(result['answer'])
 print("\n=== 重排得分 ===")
-print(result["retrieval_scores"])  # 打印得分列表
+print(result['retrieval_scores'])  # 打印得分列表
 print("\n=== 来源文档 ===")
-for i, doc in enumerate(result["source_documents"][:3], 1):
+for i, doc in enumerate(result['source_documents'][:3], 1):
     print(f"\n文档{i} [相似度:{result['retrieval_scores'][i-1]:.2f}]: {doc[:200]}...")
